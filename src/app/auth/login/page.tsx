@@ -110,13 +110,6 @@ export default function LoginPage() {
                             )}
                         </button>
                     </form>
-
-                    {/* Help Text */}
-                    <p className="mt-6 text-center text-sm text-gray-500">
-                        Default password is your email prefix
-                        <br />
-                        (e.g., <code className="bg-gray-100 px-1 rounded">kanitta.s</code> for kanitta.s@company.com)
-                    </p>
                 </div>
             </div>
         </div>
