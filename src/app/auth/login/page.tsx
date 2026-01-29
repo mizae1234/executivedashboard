@@ -29,7 +29,7 @@ export default function LoginPage() {
                 return;
             }
 
-            router.push('/');
+            router.push('/reports/gi-income');
             router.refresh();
         } catch (err) {
             setError('An error occurred. Please try again.');
