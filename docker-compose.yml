@@ -22,7 +22,7 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_SSL=${DB_SSL}
     env_file:
-      - .env.local
+      - .env
     networks:
       - app-network
 
