@@ -138,7 +138,6 @@ export default function GIIncomeReportPage() {
                                 <KPICard
                                     title="Total Income 365"
                                     value={`฿${data.summary.total365.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-                                    subtext="China Blue System"
                                 />
                                 <KPICard
                                     title="Total Income DMS"
