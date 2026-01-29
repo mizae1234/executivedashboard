@@ -86,3 +86,25 @@ INSERT INTO master_branches (code, name) VALUES
 ('gi11', 'บริษัท โกลด์ อินทิเกรท อยุธยา จำกัด');
 
 
+-- ==========================================
+-- Users Table (Authentication)
+-- ==========================================
+
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    name VARCHAR(255),
+    role VARCHAR(50) DEFAULT 'user', -- 'admin', 'user'
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_users_email ON users(email);
+
+-- Default admin user (password: admin)
+-- Password hash for 'admin': $2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4.GQHyX3L7iKWbHO
+INSERT INTO users (email, password_hash, name, role) VALUES
+('admin@icare-insurance.com', '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4.GQHyX3L7iKWbHO', 'System Admin', 'admin')
+ON CONFLICT (email) DO NOTHING;

@@ -1,8 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FileBarChart, PieChart, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, PieChart, BarChart3, Users, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -10,34 +11,16 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function Sidebar({ className }: SidebarProps) {
     const pathname = usePathname();
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    const routes = [
-        {
-            label: 'Dashboard',
-            icon: LayoutDashboard,
-            href: '/',
-            active: pathname === '/',
-        },
-        {
-            label: 'Reports',
-            group: true,
-            routes: [
-                {
-                    label: 'GI Income Report',
-                    icon: BarChart3,
-                    href: '/reports/gi-income',
-                    active: pathname === '/reports/gi-income',
-                },
-                {
-                    label: 'Sales Report',
-                    icon: PieChart,
-                    href: '/reports/sales', // Placeholder
-                    active: false,
-                    disabled: true,
-                },
-            ],
-        },
-    ];
+    useEffect(() => {
+        fetch('/api/auth/me')
+            .then(res => res.json())
+            .then(data => {
+                if (data.user?.role === 'admin') setIsAdmin(true);
+            })
+            .catch(() => { });
+    }, []);
 
     return (
         <div className={cn('pb-12 w-64 border-r bg-background hidden md:block', className)}>
@@ -72,6 +55,23 @@ export function Sidebar({ className }: SidebarProps) {
                         </Button>
                     </div>
                 </div>
+
+                {/* Admin Section */}
+                {isAdmin && (
+                    <div className="px-3 py-2">
+                        <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                            Admin
+                        </h2>
+                        <div className="space-y-1">
+                            <Link href="/admin/users" passHref>
+                                <Button variant={pathname.startsWith('/admin/users') ? 'secondary' : 'ghost'} className="w-full justify-start">
+                                    <Users className="mr-2 h-4 w-4" />
+                                    User Management
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
