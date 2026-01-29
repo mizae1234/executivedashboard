@@ -120,7 +120,7 @@ export function IncomeDMSTransactionTable({ data }: IncomeDMSTransactionTablePro
                                 <TableHead className="whitespace-nowrap">Billing Date</TableHead>
                                 <TableHead className="whitespace-nowrap">Branch</TableHead>
                                 <TableHead className="whitespace-nowrap">Customer</TableHead>
-                                <TableHead className="whitespace-nowrap">Plate No</TableHead>
+                                <TableHead className="whitespace-nowrap">Vin No</TableHead>
                                 <TableHead className="whitespace-nowrap">Status</TableHead>
                                 <TableHead className="whitespace-nowrap">Type</TableHead>
                                 <TableHead className="whitespace-nowrap">Brand</TableHead>
