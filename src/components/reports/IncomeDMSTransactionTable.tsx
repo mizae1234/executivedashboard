@@ -14,30 +14,17 @@ import { format } from "date-fns"
 import * as XLSX from 'xlsx';
 
 interface TransactionDMS {
-    branch_code: string;
-    branch_name: string;
     ordernumber: string;
     billingtime: string | Date;
+    branch_code: string;
+    branch_name: string;
     carownername: string;
-    ordertype_name: string;
-    repairtype_name: string;
-    workorderstatus_name: string;
-    licensenumber: string;
-    brand: string;
-    vehicleserialname: string;
-    vehiclemodelname: string;
     vin: string;
-    serviceadvisor: string;
-    totalamountexcludingtax: number;
-    totalamountincludingtax: number;
-    taxamount: number;
-    submissiontime: string | Date;
-    inplantmileage: number;
-    repairer: string;
-    repairerphone: string;
-    enginenumber: string;
-    manhourcost: number;
-    customerdescription: string;
+    workorderstatus_name: string;
+    ordertype_name: string;
+    brand: string;
+    final_amountexcludingtax: number;
+    claimsheetno: string;
 }
 
 interface IncomeDMSTransactionTableProps {
@@ -59,30 +46,16 @@ export function IncomeDMSTransactionTable({ data }: IncomeDMSTransactionTablePro
 
         // Prepare data for Excel
         const exportData = data.map(item => ({
-            "Branch Code": item.branch_code,
-            "Branch Name": item.branch_name,
             "Order Number": item.ordernumber,
-            "Billing Time": item.billingtime ? format(new Date(item.billingtime), "yyyy-MM-dd") : '',
-            "Car Owner": item.carownername,
-            "Order Type": item.ordertype_name,
-            "Repair Type": item.repairtype_name,
+            "Billing Date": item.billingtime ? format(new Date(item.billingtime), "yyyy-MM-dd") : '',
+            "Branch": item.branch_name,
+            "Customer": item.carownername,
+            "Vin No": item.vin,
             "Status": item.workorderstatus_name,
-            "License Plate": item.licensenumber,
+            "Type": item.ordertype_name,
             "Brand": item.brand,
-            "Vehicle Series": item.vehicleserialname,
-            "Vehicle Model": item.vehiclemodelname,
-            "VIN": item.vin,
-            "Service Advisor": item.serviceadvisor,
-            "Total (Excl. Tax)": item.totalamountexcludingtax,
-            "Total (Incl. Tax)": item.totalamountincludingtax,
-            "Tax Amount": item.taxamount,
-            "Submission Time": item.submissiontime ? format(new Date(item.submissiontime), "yyyy-MM-dd") : '',
-            "Mileage": item.inplantmileage,
-            "Repairer": item.repairer,
-            "Repairer Phone": item.repairerphone,
-            "Engine Number": item.enginenumber,
-            "Man Hour Cost": item.manhourcost,
-            "Description": item.customerdescription
+            "Total (Excl)": item.final_amountexcludingtax,
+            "ClaimNo": item.claimsheetno || ''
         }));
 
         // Create WorkSheet
@@ -125,7 +98,7 @@ export function IncomeDMSTransactionTable({ data }: IncomeDMSTransactionTablePro
                                 <TableHead className="whitespace-nowrap">Type</TableHead>
                                 <TableHead className="whitespace-nowrap">Brand</TableHead>
                                 <TableHead className="whitespace-nowrap text-right">Total (Excl)</TableHead>
-                                <TableHead className="whitespace-nowrap text-right">Total (Incl)</TableHead>
+                                <TableHead className="whitespace-nowrap">ClaimNo</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -142,7 +115,7 @@ export function IncomeDMSTransactionTable({ data }: IncomeDMSTransactionTablePro
                                         <TableCell className="whitespace-nowrap max-w-[150px] truncate" title={item.carownername}>
                                             {item.carownername}
                                         </TableCell>
-                                        <TableCell className="whitespace-nowrap">{item.licensenumber}</TableCell>
+                                        <TableCell className="whitespace-nowrap">{item.vin}</TableCell>
                                         <TableCell className="whitespace-nowrap">
                                             <span className="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ring-gray-500/10 bg-gray-50 text-gray-600">
                                                 {item.workorderstatus_name}
@@ -151,11 +124,9 @@ export function IncomeDMSTransactionTable({ data }: IncomeDMSTransactionTablePro
                                         <TableCell className="whitespace-nowrap text-xs text-muted-foreground">{item.ordertype_name}</TableCell>
                                         <TableCell className="whitespace-nowrap">{item.brand}</TableCell>
                                         <TableCell className="text-right font-medium">
-                                            {Number(item.totalamountexcludingtax).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                                            {Number(item.final_amountexcludingtax).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                                         </TableCell>
-                                        <TableCell className="text-right text-muted-foreground">
-                                            {Number(item.totalamountincludingtax).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                                        </TableCell>
+                                        <TableCell className="whitespace-nowrap">{item.claimsheetno || '-'}</TableCell>
                                     </TableRow>
                                 ))
                             ) : (
